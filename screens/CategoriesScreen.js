@@ -1,17 +1,36 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 
 import { CATEGORIES } from '../data/data';
 
-const renderGridItem = (itemData) => {
-  return (
-    <View style={styles.gridItem}>
-      <Text>{itemData.item.title}</Text>
-    </View>
-  );
-};
-
 const CategoriesScreen = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Meal Categories',
+    });
+  }, [navigation]);
+
+  const renderGridItem = (itemData) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Meals', { categoryId: itemData.item.id });
+        }}
+        style={styles.gridItem}
+      >
+        <View>
+          <Text>{itemData.item.title}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <FlatList data={CATEGORIES} renderItem={renderGridItem} numColumns={2} />
   );

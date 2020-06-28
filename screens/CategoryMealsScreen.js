@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 
-const CategoriyMealsScreen = ({ navigation }) => {
+import { CATEGORIES } from '../data/data';
+
+const CategoriyMealsScreen = ({ navigation, route }) => {
+  const { categoryId } = route.params;
+
+  const selectedCategory = CATEGORIES.find((cat) => cat.id === categoryId);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: selectedCategory.title,
+    });
+  }, [navigation, selectedCategory]);
+
   return (
     <View style={styles.screen}>
       <Text>The Category Meal Screen!</Text>
