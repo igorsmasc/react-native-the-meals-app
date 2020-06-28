@@ -1,7 +1,9 @@
 import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { MEALS } from '../data/data';
+import HeaderButton from '../components/HeaderButton';
 
 const MealDetailScreen = ({ navigation, route }) => {
   const { id } = route.params;
@@ -11,6 +13,11 @@ const MealDetailScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: selectedMeal.title,
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+          <Item title="Favorite" iconName="ios-star" onPress={() => {}} />
+        </HeaderButtons>
+      ),
     });
   }, [navigation, selectedMeal.title]);
 
