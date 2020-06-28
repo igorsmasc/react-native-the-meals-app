@@ -1,12 +1,28 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 
-import { CATEGORIES } from '../data/data';
+import MealItem from '../components/MealItem';
+import { CATEGORIES, MEALS } from '../data/data';
 
 const CategoriyMealsScreen = ({ navigation, route }) => {
   const { categoryId } = route.params;
 
   const selectedCategory = CATEGORIES.find((cat) => cat.id === categoryId);
+
+  const displayedMeals = MEALS.filter(
+    (meal) => meal.categoryIds.indexOf(categoryId) >= 0,
+  );
+
+  const renderMealItem = ({ item }) => {
+    return (
+      <MealItem
+        item={item}
+        onSelect={() => {
+          navigation.navigate('Details', { id: item.id });
+        }}
+      />
+    );
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,12 +32,10 @@ const CategoriyMealsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.screen}>
-      <Text>The Category Meal Screen!</Text>
-      <Button
-        title="Go to details"
-        onPress={() => {
-          navigation.navigate('Details');
-        }}
+      <FlatList
+        data={displayedMeals}
+        renderItem={renderMealItem}
+        style={styles.list}
       />
     </View>
   );
@@ -32,7 +46,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 15,
   },
+  list: { width: '100%' },
 });
 
 export default CategoriyMealsScreen;
