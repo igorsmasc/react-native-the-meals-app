@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 
 import MealItem from '../components/MealItem';
