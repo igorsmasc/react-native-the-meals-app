@@ -4,11 +4,15 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
+import { View, Text, StyleSheet, Switch, YellowBox } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
+
+YellowBox.ignoreWarnings([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const FilterSwitch = ({ label, state, onChange }) => {
   return (
@@ -55,11 +59,17 @@ const FiltersScreen = ({ screen, navigation, route }) => {
           />
         </HeaderButtons>
       ),
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item title="Menu" iconName="ios-save" onPress={route.params.save} />
-        </HeaderButtons>
-      ),
+      headerRight: () => {
+        let onPress;
+        if (route.params) {
+          onPress = route.params.save;
+        }
+        return (
+          <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item title="Menu" iconName="ios-save" onPress={onPress} />
+          </HeaderButtons>
+        );
+      },
     });
   }, [navigation, route]);
 

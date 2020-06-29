@@ -1,10 +1,11 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { MEALS } from '../data/data';
 import HeaderButton from '../components/HeaderButton';
 import DefaultText from '../components/DefaultText';
+import { toggleFavorite } from '../store/actions/meals';
 
 const ListItem = ({ children }) => {
   return (
@@ -17,18 +18,30 @@ const ListItem = ({ children }) => {
 const MealDetailScreen = ({ navigation, route }) => {
   const { id } = route.params;
 
-  const selectedMeal = MEALS.find((meal) => meal.id === id);
+  const availableMeals = useSelector((state) => state.meals.filteredMeals);
 
-  useLayoutEffect(() => {
+  const selectedMeal = availableMeals.find((meal) => meal.id === id);
+
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
     navigation.setOptions({
       title: selectedMeal.title,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item title="Favorite" iconName="ios-star" onPress={() => {}} />
+          <Item
+            title="Favorite"
+            iconName="ios-star"
+            onPress={toggleFavoriteHandler}
+          />
         </HeaderButtons>
       ),
     });
-  }, [navigation, selectedMeal.title]);
+  }, [navigation, selectedMeal.title, toggleFavoriteHandler]);
 
   return (
     <ScrollView>
