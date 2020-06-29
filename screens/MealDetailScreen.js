@@ -20,6 +20,9 @@ const MealDetailScreen = ({ navigation, route }) => {
 
   const availableMeals = useSelector((state) => state.meals.filteredMeals);
 
+  const currentMealIsFavorite = useSelector((state) =>
+    state.meals.favoriteMeals.some((meal) => id === meal.id),
+  );
   const selectedMeal = availableMeals.find((meal) => meal.id === id);
 
   const dispatch = useDispatch();
@@ -35,13 +38,18 @@ const MealDetailScreen = ({ navigation, route }) => {
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
             title="Favorite"
-            iconName="ios-star"
+            iconName={currentMealIsFavorite ? 'ios-star' : 'ios-star-outline'}
             onPress={toggleFavoriteHandler}
           />
         </HeaderButtons>
       ),
     });
-  }, [navigation, selectedMeal.title, toggleFavoriteHandler]);
+  }, [
+    navigation,
+    selectedMeal.title,
+    toggleFavoriteHandler,
+    currentMealIsFavorite,
+  ]);
 
   return (
     <ScrollView>
