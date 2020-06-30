@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from 'react-native';
 
 import MealItem from '../components/MealItem';
 
-const MealList = ({ listData, navigation }) => {
+const MealList = ({ listData, navigation, emptyList }) => {
   const renderMealItem = ({ item }) => {
     return (
       <MealItem
@@ -23,6 +23,7 @@ const MealList = ({ listData, navigation }) => {
         data={listData}
         renderItem={renderMealItem}
         style={styles.list}
+        ListEmptyComponent={emptyList}
       />
     </View>
   );

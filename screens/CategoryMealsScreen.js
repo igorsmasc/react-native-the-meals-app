@@ -1,8 +1,16 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { View, StyleSheet } from 'react-native';
 
 import MealList from '../components/MealList';
 import { CATEGORIES } from '../data/data';
+import DefaultText from '../components/DefaultText';
+
+const EmptyMealsList = () => (
+  <View style={styles.content}>
+    <DefaultText>No meals found. maybe check your filters?</DefaultText>
+  </View>
+);
 
 const CategoriyMealsScreen = ({ navigation, route }) => {
   const { categoryId } = route.params;
@@ -21,7 +29,21 @@ const CategoriyMealsScreen = ({ navigation, route }) => {
     });
   }, [navigation, selectedCategory]);
 
-  return <MealList listData={displayedMeals} navigation={navigation} />;
+  return (
+    <MealList
+      listData={displayedMeals}
+      navigation={navigation}
+      emptyList={EmptyMealsList}
+    />
+  );
 };
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default CategoriyMealsScreen;

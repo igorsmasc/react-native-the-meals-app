@@ -4,15 +4,13 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { View, Text, StyleSheet, Switch, YellowBox } from 'react-native';
+import { View, Text, StyleSheet, Switch } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch } from 'react-redux';
 
 import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
-
-YellowBox.ignoreWarnings([
-  'Non-serializable values were found in the navigation state',
-]);
+import { setFilters } from '../store/actions/meals';
 
 const FilterSwitch = ({ label, state, onChange }) => {
   return (
@@ -34,6 +32,8 @@ const FiltersScreen = ({ screen, navigation, route }) => {
   const [isVegan, setIsVegan] = useState(false);
   const [isVegetarian, setIsVegetarian] = useState(false);
 
+  const dispatch = useDispatch();
+
   const saveFilters = useCallback(() => {
     const appliedFilters = {
       isGlutenFree: isGlutenFree,
@@ -42,8 +42,8 @@ const FiltersScreen = ({ screen, navigation, route }) => {
       isVegetarian: isVegetarian,
     };
 
-    console.log(appliedFilters);
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+    dispatch(setFilters(appliedFilters));
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
